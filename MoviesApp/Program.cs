@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using MoviesApp.Data;
+using MoviesApp.Services;
 
 namespace MoviesApp
 {
@@ -11,13 +12,17 @@ namespace MoviesApp
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            //Database connection
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnString") 
+                ?? throw new InvalidOperationException("Connection string DefaultConnString not found")));
+            //Dependency injection services
+            builder.Services.AddScoped<MoviesService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnString") ??
-                throw new InvalidOperationException("Connection string DefaultConnString not found")));
+
 
             var app = builder.Build();
 
