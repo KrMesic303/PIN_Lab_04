@@ -8,5 +8,8 @@ namespace MoviesApp.Data
 
         public DbSet<Movie> Movies { get; set; }
 
+
+
+
     }
 }
